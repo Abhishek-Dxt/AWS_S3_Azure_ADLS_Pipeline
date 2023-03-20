@@ -34,3 +34,30 @@ The data is then successfully copied from S3 to our landing folder in ADLS.
 
 <img width="937" alt="Pipeline_successful_2" src="https://user-images.githubusercontent.com/71979171/226243423-7bba0898-95c1-4d63-9da2-cfde96d9e513.PNG">
 
+
+## File Validation using Azure Function App & Blob Trigger Functions
+
+A trigger should be activated as soon as a file lands in the ADLS landing folder. For this I have used a Blob Trigger function that uses a JavaScript coded function to detect any new file in the landing folder and based on that executes the script. The script validates the file and accordingly sends it to either a **staging folder** or a **rejected folder** for invalid files. The trigger-function pipeline looks like this -
+
+<img width="763" alt="BlobTrigger" src="https://user-images.githubusercontent.com/71979171/226456898-2faad1ea-876e-424f-acdf-5f09d2e8b735.PNG">
+
+Testing a valid file & running the script gives the following output - 
+
+<img width="938" alt="Func_1" src="https://user-images.githubusercontent.com/71979171/226457028-84b006b8-5dcc-472e-9508-52b293f39ebe.PNG">
+
+Subsequently, a staging folder is created in the input directory (since the file was valid) 
+
+<img width="431" alt="staging_created" src="https://user-images.githubusercontent.com/71979171/226457624-7dac60bc-020a-4e66-a11f-54a2f1dd069c.PNG">
+
+
+## Creating Azure SQL Server & Database (another ADF Pipeline)
+
+Now, the validated files need to be transferred from the staging folder to a SQL DB. For this, I will be using Azure Data Factory again.
+This time the pipeline source will be the staging folder in our input directory & sink a SQL database. In the pipeline itself, a trigger will need to be created that gets activated whenever a file appears in the staging folder. After linking the pipeline source & sink, the pipeline looks like this -
+
+<img width="839" alt="Staging_sql_db" src="https://user-images.githubusercontent.com/71979171/226477817-42502695-935b-4fd2-b98e-c80c2522db82.PNG">
+
+
+
+
+
