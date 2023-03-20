@@ -53,11 +53,13 @@ Subsequently, a staging folder is created in the input directory (since the file
 ## Creating Azure SQL Server & Database (another ADF Pipeline)
 
 Now, the validated files need to be transferred from the staging folder to a SQL DB. For this, I will be using Azure Data Factory again.
-This time the pipeline source will be the staging folder in our input directory & sink a SQL database. In the pipeline itself, a trigger will need to be created that gets activated whenever a file appears in the staging folder. After linking the pipeline source & sink, the pipeline looks like this -
+This time the pipeline source will be the staging folder in our input directory & sink a SQL database. In the pipeline itself, a trigger will need to be created that gets activated whenever a file appears in the staging folder. After linking the pipeline source & sink, upon publishing & triggering the staging event, the pipeline successfully transfers the data from ADLS staging folder to Azure SQL Database -
 
-<img width="839" alt="Staging_sql_db" src="https://user-images.githubusercontent.com/71979171/226477817-42502695-935b-4fd2-b98e-c80c2522db82.PNG">
+<img width="861" alt="Staging_sql_db" src="https://user-images.githubusercontent.com/71979171/226479459-2cef2fa4-6069-4801-a40b-d932907549f2.PNG">
+
+It says 500 rows have been written to a table in our SQL Db. We can verify that using the db query editor - 
+
+<img width="927" alt="Query" src="https://user-images.githubusercontent.com/71979171/226481334-16010099-d848-4f43-91e0-e5a00931870f.PNG">
 
 
-
-
-
+Hence, an end-to-end pipeline is successfully deployed that will continuously pick up data from a source AWS S3 bucket, bring it to Azure using an ADF Pipeline, validate the files and finally, using another ADF pipeline, store it into an Azure SQL Storage Database.
